@@ -323,7 +323,7 @@ typedef enum {
  */
 typedef enum {
 	HW_TYPE_UNDEFINED = 0xffff, 
-	HW_TYPE_SFDQ = 0x0000, 
+	HW_TYPE_LEGACY = 0x0000, 
 	HW_TYPE_BLUE_SERVO = 0x0001, 
 	HW_TYPE_LUMEN = 0x0002, 
 	HW_TYPE_NUCLEO = 0x0003, 
