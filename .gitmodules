@@ -1,0 +1,9 @@
+[submodule "blueberry-transcode-firmware"]
+	path = blueberry-transcode-firmware
+	url = git@github.com:bluerobotics/blueberry-transcode-firmware.git
+[submodule "blueberry-dictionary"]
+	path = blueberry-dictionary
+	url = git@github.com:bluerobotics/blueberry-dictionary.git
+[submodule "blueberry-schema-parser"]
+	path = blueberry-schema-parser
+	url = git@github.com:bluerobotics/blueberry-schema-parser.git
