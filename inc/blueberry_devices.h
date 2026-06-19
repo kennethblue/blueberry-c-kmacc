@@ -51,13 +51,16 @@
 #define BLUEBERRY_DEVICES_FLASH_PROGRAM_MESSAGE_KEY (0x4244d12c)
 #define BLUEBERRY_DEVICES_GPIO_CONFIG_MESSAGE_KEY (0x4244d14e)
 #define BLUEBERRY_DEVICES_GPIO_PINS_MESSAGE_KEY (0x424471ef)
+#define BLUEBERRY_DEVICES_I_2_C_TRANSACTION_MESSAGE_KEY (0x424435b1)
 #define BLUEBERRY_DEVICES_ID_MESSAGE_KEY (0x42448ca5)
+#define BLUEBERRY_DEVICES_IMU_DATA_MESSAGE_KEY (0x424465a1)
 #define BLUEBERRY_DEVICES_OSCOPE_CONFIG_MESSAGE_KEY (0x42447e1d)
 #define BLUEBERRY_DEVICES_OSCOPE_DATA_MESSAGE_KEY (0x4244831d)
 #define BLUEBERRY_DEVICES_SPI_TRANSACTION_MESSAGE_KEY (0x424425ed)
 #define BLUEBERRY_DEVICES_THERMISTOR_CONFIG_MESSAGE_KEY (0x4244aae3)
 #define BLUEBERRY_DEVICES_THERMISTOR_DATA_MESSAGE_KEY (0x4244d51a)
 #define BLUEBERRY_DEVICES_TIME_MESSAGE_KEY (0x42443c5b)
+#define BLUEBERRY_DEVICES_TIME_SYNC_MESSAGE_KEY (0x4244767d)
 #define BLUEBERRY_DEVICES_VERSION_MESSAGE_KEY (0x42448366)
 #define BLUEBERRY_DEVICES_WHOS_THERE_MESSAGE_KEY (0x42441971)
 //Numerical & Boolean Constants
@@ -229,6 +232,10 @@ typedef enum {
 	UNIT_METRES_PER_SECOND = 0x0003, 
 	UNIT_RADIANS_PER_SECOND = 0x0004, 
 	UNIT_DEGREES = 0x0005, 
+	UNIT_METRES_PER_SECOND_SQUARED = 0x0006, 
+	UNIT_RADIANS_PER_SECOND_SQUARED = 0x0007, 
+	UNIT_NEWTONS = 0x0008, 
+	UNIT_NEWTON_METRES = 0x0009, 
 } UnitEnum;
 
 /**
@@ -285,6 +292,14 @@ typedef enum {
 } GpioDirEnum;
 
 typedef enum {
+	I_2_C_DEV_BB_I2CNULL_DEV = 0x00ff, 
+	I_2_C_DEV_BB_I2C1_DEV = 0x0000, 
+	I_2_C_DEV_BB_I2C2_DEV = 0x0001, 
+	I_2_C_DEV_BB_I2C3_DEV = 0x0002, 
+	I_2_C_DEV_BB_I2C4_DEV = 0x0003, 
+} I2CDevBbEnum;
+
+typedef enum {
 	TRIGGER_POS_ENUM_FIRST_QUARTER_TRIG_POS = 0x0000, 
 	TRIGGER_POS_ENUM_SECOND_QUARTER_TRIG_POS = 0x0001, 
 	TRIGGER_POS_ENUM_THIRD_QUARTER_TRIG_POS = 0x0002, 
@@ -330,6 +345,7 @@ typedef enum {
 	HW_TYPE_BLUE_ESC = 0x0004, 
 	HW_TYPE_GIGABOARD = 0x0005, 
 	HW_TYPE_BLUE_BRIDGE = 0x0006, 
+	HW_TYPE_POGOBRAIN = 0x0007, 
 } HwTypeEnum;
 
 typedef enum {
@@ -357,13 +373,16 @@ extern const char FEEDBACK_MESSAGE_TOPIC[];
 extern const char FLASH_PROGRAM_MESSAGE_TOPIC[];
 extern const char GPIO_CONFIG_MESSAGE_TOPIC[];
 extern const char GPIO_PINS_MESSAGE_TOPIC[];
+extern const char I_2_C_TRANSACTION_MESSAGE_TOPIC[];
 extern const char ID_MESSAGE_TOPIC[];
+extern const char IMU_DATA_MESSAGE_TOPIC[];
 extern const char OSCOPE_CONFIG_MESSAGE_TOPIC[];
 extern const char OSCOPE_DATA_MESSAGE_TOPIC[];
 extern const char SPI_TRANSACTION_MESSAGE_TOPIC[];
 extern const char THERMISTOR_CONFIG_MESSAGE_TOPIC[];
 extern const char THERMISTOR_DATA_MESSAGE_TOPIC[];
 extern const char TIME_MESSAGE_TOPIC[];
+extern const char TIME_SYNC_MESSAGE_TOPIC[];
 extern const char VERSION_MESSAGE_TOPIC[];
 extern const char WHOS_THERE_MESSAGE_TOPIC[];
 
@@ -429,6 +448,18 @@ BbBlock addGpioConfigMessage(Bb * buf);
  */
 BbBlock addGpioPinsMessage(Bb * buf);
 /**
+ * Adds a I 2 C Transaction Message to the end of the current buffer
+ *  A message to define an I2C transaction to be sent out
+ * @param buf - the message buffer to add the message to
+ * @param i2CDev
+ * @param i2CAddr
+ * @param numTxBytes
+ * @param numRxBytes
+ * @param transactionId -  Unique ID for the transaction
+ * @returns - the index of the new message.
+ */
+BbBlock addI2CTransactionMessage(Bb * buf, I2CDevBbEnum i2CDev, uint8_t i2CAddr, uint16_t numTxBytes, uint16_t numRxBytes, int32_t transactionId);
+/**
  * Adds a Id Message to the end of the current buffer
  * A message to convey the unique ID of this devices
  * @param buf - the message buffer to add the message to
@@ -437,6 +468,13 @@ BbBlock addGpioPinsMessage(Bb * buf);
  * @returns - the index of the new message.
  */
 BbBlock addIdMessage(Bb * buf, uint32_t id);
+/**
+ * Adds a Imu Data Message to the end of the current buffer
+ * A message to convey one or more coordinates
+ * @param buf - the message buffer to add the message to
+ * @returns - the index of the new message.
+ */
+BbBlock addImuDataMessage(Bb * buf);
 /**
  * Adds a Oscope Config Message to the end of the current buffer
  * A message to convey setup parameters for the oscope module
@@ -494,13 +532,23 @@ BbBlock addThermistorConfigMessage(Bb * buf);
 BbBlock addThermistorDataMessage(Bb * buf);
 /**
  * Adds a Time Message to the end of the current buffer
- * A message to convey the unique ID of this devices
+ * A message for time synchronization.
+ * This message will likely be deprecated soon. 
  * @param buf - the message buffer to add the message to
  * @param hostTime - time in milliseconds from program start according to the bus controller
  * @param localTime - time in milliseconds from program start according to sender of this packet
  * @returns - the index of the new message.
  */
 BbBlock addTimeMessage(Bb * buf, uint32_t hostTime, uint32_t localTime);
+/**
+ * Adds a Time Sync Message to the end of the current buffer
+ * An improved message for time synchronization that uses the new Time64 deined type
+ * @param buf - the message buffer to add the message to
+ * @param senderTime - a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param lastReceivedTime - a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @returns - the index of the new message.
+ */
+BbBlock addTimeSyncMessage(Bb * buf, uint64_t senderTime, uint64_t lastReceivedTime);
 /**
  * Adds a Version Message to the end of the current buffer
  * A message to convey hardware and firmware versions in addition to hardware type
@@ -2513,6 +2561,112 @@ void initGpioPinsMessagePort(Bb * buf, BbBlock msg, uint32_t n);
 uint32_t getGpioPinsMessagePortSequenceLength(Bb * buf, BbBlock msg);
 /**
  * Tests if the current message has no fields present.
+ *  A message to define an I2C transaction to be sent out
+ */
+bool isI2CTransactionMessageEmpty(Bb * buf, BbBlock msg);
+/**
+ * Tests if the current message has all defined fields present.
+ *  A message to define an I2C transaction to be sent out
+ */
+bool isI2CTransactionMessageFull(Bb * buf, BbBlock msg);
+/**
+ * A getter for the i2CDev field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+I2CDevBbEnum getI2CTransactionMessageI2CDev(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the i2CDev field
+ */
+bool isI2CTransactionMessageI2CDevPresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the i2CAddr field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint8_t getI2CTransactionMessageI2CAddr(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the i2CAddr field
+ */
+bool isI2CTransactionMessageI2CAddrPresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the numTxBytes field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint16_t getI2CTransactionMessageNumTxBytes(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the numTxBytes field
+ */
+bool isI2CTransactionMessageNumTxBytesPresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the numRxBytes field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint16_t getI2CTransactionMessageNumRxBytes(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the numRxBytes field
+ */
+bool isI2CTransactionMessageNumRxBytesPresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the transactionId field
+ *  Unique ID for the transaction
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+int32_t getI2CTransactionMessageTransactionId(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the transactionId field
+ *  Unique ID for the transaction
+ */
+bool isI2CTransactionMessageTransactionIdPresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the transactionData field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of transactionData sequence.
+ */
+uint32_t getI2CTransactionMessageTransactionData(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the transactionData field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of transactionData sequence.
+ * @param transactionData
+ */
+void setI2CTransactionMessageTransactionData(Bb * buf, BbBlock msg , uint32_t i0, uint32_t transactionData);
+/**
+ * A getter for the transactionData field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of transactionData sequence.
+ */
+uint32_t getI2CTransactionMessageTransactionData(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the transactionData field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of transactionData sequence.
+ * @param transactionData
+ */
+void setI2CTransactionMessageTransactionData(Bb * buf, BbBlock msg , uint32_t i0, uint32_t transactionData);
+/**
+ * A function to initialize a I 2 C Transaction Data
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param n - the number of elements of this sequence
+ */
+void initI2CTransactionMessageTransactionData(Bb * buf, BbBlock msg, uint32_t n);
+/**
+ * Gets the defined length of a sequence I 2 C Transaction Data
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @return - the number of elements in the sequence
+ */
+uint32_t getI2CTransactionMessageTransactionDataSequenceLength(Bb * buf, BbBlock msg);
+/**
+ * Tests if the current message has no fields present.
  * A message to convey the unique ID of this devices
  */
 bool isIdMessageEmpty(Bb * buf, BbBlock msg);
@@ -2535,6 +2689,330 @@ uint32_t getIdMessageId(Bb * buf, BbBlock msg );
  * this is unique.
  */
 bool isIdMessageIdPresent(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message has no fields present.
+ * A message to convey one or more coordinates
+ */
+bool isImuDataMessageEmpty(Bb * buf, BbBlock msg);
+/**
+ * Tests if the current message has all defined fields present.
+ * A message to convey one or more coordinates
+ */
+bool isImuDataMessageFull(Bb * buf, BbBlock msg);
+/**
+ * A getter for the x field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsX(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the x field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param x
+ */
+void setImuDataMessageCoordsX(Bb * buf, BbBlock msg , uint32_t i0, float x);
+/**
+ * A getter for the y field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsY(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the y field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param y
+ */
+void setImuDataMessageCoordsY(Bb * buf, BbBlock msg , uint32_t i0, float y);
+/**
+ * A getter for the z field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsZ(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the z field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param z
+ */
+void setImuDataMessageCoordsZ(Bb * buf, BbBlock msg , uint32_t i0, float z);
+/**
+ * A getter for the unit field
+ * A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+UnitEnum getImuDataMessageCoordsUnit(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the unit field
+ * A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param unit - A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ */
+void setImuDataMessageCoordsUnit(Bb * buf, BbBlock msg , uint32_t i0, UnitEnum unit);
+/**
+ * A getter for the time field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+uint64_t getImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the time field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param time - a measure of time in 100ns increments since an epoch of January 1st 2000
+ */
+void setImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0, uint64_t time);
+/**
+ * A getter for the time field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+uint64_t getImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the time field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param time
+ */
+void setImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0, uint64_t time);
+/**
+ * A getter for the x field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsX(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the x field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param x
+ */
+void setImuDataMessageCoordsX(Bb * buf, BbBlock msg , uint32_t i0, float x);
+/**
+ * A getter for the y field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsY(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the y field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param y
+ */
+void setImuDataMessageCoordsY(Bb * buf, BbBlock msg , uint32_t i0, float y);
+/**
+ * A getter for the z field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsZ(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the z field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param z
+ */
+void setImuDataMessageCoordsZ(Bb * buf, BbBlock msg , uint32_t i0, float z);
+/**
+ * A getter for the unit field
+ * A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+UnitEnum getImuDataMessageCoordsUnit(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the unit field
+ * A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param unit - A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ */
+void setImuDataMessageCoordsUnit(Bb * buf, BbBlock msg , uint32_t i0, UnitEnum unit);
+/**
+ * A getter for the time field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+uint64_t getImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the time field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param time - a measure of time in 100ns increments since an epoch of January 1st 2000
+ */
+void setImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0, uint64_t time);
+/**
+ * A getter for the time field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+uint64_t getImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the time field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param time
+ */
+void setImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0, uint64_t time);
+/**
+ * A getter for the x field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsX(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the x field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param x
+ */
+void setImuDataMessageCoordsX(Bb * buf, BbBlock msg , uint32_t i0, float x);
+/**
+ * A getter for the y field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsY(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the y field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param y
+ */
+void setImuDataMessageCoordsY(Bb * buf, BbBlock msg , uint32_t i0, float y);
+/**
+ * A getter for the z field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsZ(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the z field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param z
+ */
+void setImuDataMessageCoordsZ(Bb * buf, BbBlock msg , uint32_t i0, float z);
+/**
+ * A getter for the unit field
+ * A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+UnitEnum getImuDataMessageCoordsUnit(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the unit field
+ * A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param unit - A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ */
+void setImuDataMessageCoordsUnit(Bb * buf, BbBlock msg , uint32_t i0, UnitEnum unit);
+/**
+ * A getter for the time field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+uint64_t getImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the time field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param time - a measure of time in 100ns increments since an epoch of January 1st 2000
+ */
+void setImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0, uint64_t time);
+/**
+ * A getter for the time field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+uint64_t getImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the time field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param time
+ */
+void setImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0, uint64_t time);
+/**
+ * A function to initialize a Coordinates
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param n - the number of elements of this sequence
+ */
+void initImuDataMessageCoords(Bb * buf, BbBlock msg, uint32_t n);
+/**
+ * Gets the defined length of a sequence Coordinates
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @return - the number of elements in the sequence
+ */
+uint32_t getImuDataMessageCoordsSequenceLength(Bb * buf, BbBlock msg);
 /**
  * Tests if the current message has no fields present.
  * A message to convey setup parameters for the oscope module
@@ -3354,12 +3832,14 @@ void initThermistorDataMessageData(Bb * buf, BbBlock msg, uint32_t n);
 uint32_t getThermistorDataMessageDataSequenceLength(Bb * buf, BbBlock msg);
 /**
  * Tests if the current message has no fields present.
- * A message to convey the unique ID of this devices
+ * A message for time synchronization.
+ * This message will likely be deprecated soon. 
  */
 bool isTimeMessageEmpty(Bb * buf, BbBlock msg);
 /**
  * Tests if the current message has all defined fields present.
- * A message to convey the unique ID of this devices
+ * A message for time synchronization.
+ * This message will likely be deprecated soon. 
  */
 bool isTimeMessageFull(Bb * buf, BbBlock msg);
 /**
@@ -3386,6 +3866,60 @@ uint32_t getTimeMessageLocalTime(Bb * buf, BbBlock msg );
  * time in milliseconds from program start according to sender of this packet
  */
 bool isTimeMessageLocalTimePresent(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message has no fields present.
+ * An improved message for time synchronization that uses the new Time64 deined type
+ */
+bool isTimeSyncMessageEmpty(Bb * buf, BbBlock msg);
+/**
+ * Tests if the current message has all defined fields present.
+ * An improved message for time synchronization that uses the new Time64 deined type
+ */
+bool isTimeSyncMessageFull(Bb * buf, BbBlock msg);
+/**
+ * A getter for the senderTime field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint64_t getTimeSyncMessageSenderTime(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the senderTime field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ */
+bool isTimeSyncMessageSenderTimePresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the senderTime field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint64_t getTimeSyncMessageSenderTime(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the senderTime field
+ */
+bool isTimeSyncMessageSenderTimePresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the lastReceivedTime field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint64_t getTimeSyncMessageLastReceivedTime(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the lastReceivedTime field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ */
+bool isTimeSyncMessageLastReceivedTimePresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the lastReceivedTime field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint64_t getTimeSyncMessageLastReceivedTime(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the lastReceivedTime field
+ */
+bool isTimeSyncMessageLastReceivedTimePresent(Bb * buf, BbBlock msg );
 /**
  * Tests if the current message has no fields present.
  * A message to convey hardware and firmware versions in addition to hardware type

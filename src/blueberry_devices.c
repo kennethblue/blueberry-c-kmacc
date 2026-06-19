@@ -117,6 +117,26 @@
 #define ID_MESSAGE_LENGTH_INDEX (4)
 #define ID_MESSAGE_MAX_ORDINAL_INDEX (6)
 #define ID_MESSAGE_MODULE_MESSAGE_KEY_INDEX (0)
+#define IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX (8)
+#define IMU_DATA_MESSAGE_COORDS_TIME_INDEX (16)
+#define IMU_DATA_MESSAGE_COORDS_TIME_INDEX (16)
+#define IMU_DATA_MESSAGE_COORDS_UNIT_INDEX (12)
+#define IMU_DATA_MESSAGE_COORDS_X_INDEX (0)
+#define IMU_DATA_MESSAGE_COORDS_Y_INDEX (4)
+#define IMU_DATA_MESSAGE_COORDS_Z_INDEX (8)
+#define IMU_DATA_MESSAGE_LENGTH_INDEX (4)
+#define IMU_DATA_MESSAGE_MAX_ORDINAL_INDEX (6)
+#define IMU_DATA_MESSAGE_MODULE_MESSAGE_KEY_INDEX (0)
+#define I_2_C_TRANSACTION_MESSAGE_I_2_C_ADDR_INDEX (9)
+#define I_2_C_TRANSACTION_MESSAGE_I_2_C_DEV_INDEX (8)
+#define I_2_C_TRANSACTION_MESSAGE_LENGTH_INDEX (4)
+#define I_2_C_TRANSACTION_MESSAGE_MAX_ORDINAL_INDEX (6)
+#define I_2_C_TRANSACTION_MESSAGE_MODULE_MESSAGE_KEY_INDEX (0)
+#define I_2_C_TRANSACTION_MESSAGE_NUM_RX_BYTES_INDEX (12)
+#define I_2_C_TRANSACTION_MESSAGE_NUM_TX_BYTES_INDEX (10)
+#define I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_INDEX (0)
+#define I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_INDEX (20)
+#define I_2_C_TRANSACTION_MESSAGE_TRANSACTION_ID_INDEX (16)
 #define OSCOPE_CONFIG_MESSAGE_HOLDOFF_INDEX (20)
 #define OSCOPE_CONFIG_MESSAGE_LENGTH_INDEX (4)
 #define OSCOPE_CONFIG_MESSAGE_MAX_ORDINAL_INDEX (6)
@@ -170,6 +190,13 @@
 #define TIME_MESSAGE_LOCAL_TIME_INDEX (12)
 #define TIME_MESSAGE_MAX_ORDINAL_INDEX (6)
 #define TIME_MESSAGE_MODULE_MESSAGE_KEY_INDEX (0)
+#define TIME_SYNC_MESSAGE_LAST_RECEIVED_TIME_INDEX (16)
+#define TIME_SYNC_MESSAGE_LAST_RECEIVED_TIME_INDEX (16)
+#define TIME_SYNC_MESSAGE_LENGTH_INDEX (4)
+#define TIME_SYNC_MESSAGE_MAX_ORDINAL_INDEX (6)
+#define TIME_SYNC_MESSAGE_MODULE_MESSAGE_KEY_INDEX (0)
+#define TIME_SYNC_MESSAGE_SENDER_TIME_INDEX (8)
+#define TIME_SYNC_MESSAGE_SENDER_TIME_INDEX (8)
 #define VERSION_MESSAGE_FIRMWARE_VERSION_INDEX (8)
 #define VERSION_MESSAGE_HARDWARE_REV_INDEX (12)
 #define VERSION_MESSAGE_HARDWARE_TYPE_INDEX (14)
@@ -258,6 +285,24 @@
 #define ID_MESSAGE_LENGTH_ORDINAL (1)
 #define ID_MESSAGE_MAX_ORDINAL_ORDINAL (2)
 #define ID_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
+#define IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_ORDINAL (3)
+#define IMU_DATA_MESSAGE_COORDS_TIME_ORDINAL (3)
+#define IMU_DATA_MESSAGE_COORDS_UNIT_ORDINAL (3)
+#define IMU_DATA_MESSAGE_COORDS_X_ORDINAL (3)
+#define IMU_DATA_MESSAGE_COORDS_Y_ORDINAL (3)
+#define IMU_DATA_MESSAGE_COORDS_Z_ORDINAL (3)
+#define IMU_DATA_MESSAGE_LENGTH_ORDINAL (1)
+#define IMU_DATA_MESSAGE_MAX_ORDINAL_ORDINAL (2)
+#define IMU_DATA_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
+#define I_2_C_TRANSACTION_MESSAGE_I_2_C_ADDR_ORDINAL (4)
+#define I_2_C_TRANSACTION_MESSAGE_I_2_C_DEV_ORDINAL (3)
+#define I_2_C_TRANSACTION_MESSAGE_LENGTH_ORDINAL (1)
+#define I_2_C_TRANSACTION_MESSAGE_MAX_ORDINAL_ORDINAL (2)
+#define I_2_C_TRANSACTION_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
+#define I_2_C_TRANSACTION_MESSAGE_NUM_RX_BYTES_ORDINAL (6)
+#define I_2_C_TRANSACTION_MESSAGE_NUM_TX_BYTES_ORDINAL (5)
+#define I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_ORDINAL (8)
+#define I_2_C_TRANSACTION_MESSAGE_TRANSACTION_ID_ORDINAL (7)
 #define OSCOPE_CONFIG_MESSAGE_HOLDOFF_ORDINAL (6)
 #define OSCOPE_CONFIG_MESSAGE_LENGTH_ORDINAL (1)
 #define OSCOPE_CONFIG_MESSAGE_MAX_ORDINAL_ORDINAL (2)
@@ -309,6 +354,11 @@
 #define TIME_MESSAGE_LOCAL_TIME_ORDINAL (4)
 #define TIME_MESSAGE_MAX_ORDINAL_ORDINAL (2)
 #define TIME_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
+#define TIME_SYNC_MESSAGE_LAST_RECEIVED_TIME_ORDINAL (4)
+#define TIME_SYNC_MESSAGE_LENGTH_ORDINAL (1)
+#define TIME_SYNC_MESSAGE_MAX_ORDINAL_ORDINAL (2)
+#define TIME_SYNC_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
+#define TIME_SYNC_MESSAGE_SENDER_TIME_ORDINAL (3)
 #define VERSION_MESSAGE_FIRMWARE_VERSION_ORDINAL (3)
 #define VERSION_MESSAGE_HARDWARE_REV_ORDINAL (4)
 #define VERSION_MESSAGE_HARDWARE_TYPE_ORDINAL (5)
@@ -339,6 +389,10 @@
 #define GPIO_PINS_MESSAGE_MODULE_MESSAGE_KEY (0x424471ef)
 #define ID_MESSAGE_MAX_ORDINAL (3)
 #define ID_MESSAGE_MODULE_MESSAGE_KEY (0x42448ca5)
+#define IMU_DATA_MESSAGE_MAX_ORDINAL (3)
+#define IMU_DATA_MESSAGE_MODULE_MESSAGE_KEY (0x424465a1)
+#define I_2_C_TRANSACTION_MESSAGE_MAX_ORDINAL (8)
+#define I_2_C_TRANSACTION_MESSAGE_MODULE_MESSAGE_KEY (0x424435b1)
 #define OSCOPE_CONFIG_MESSAGE_MAX_ORDINAL (8)
 #define OSCOPE_CONFIG_MESSAGE_MODULE_MESSAGE_KEY (0x42447e1d)
 #define OSCOPE_DATA_MESSAGE_MAX_ORDINAL (8)
@@ -351,6 +405,8 @@
 #define THERMISTOR_DATA_MESSAGE_MODULE_MESSAGE_KEY (0x4244d51a)
 #define TIME_MESSAGE_MAX_ORDINAL (4)
 #define TIME_MESSAGE_MODULE_MESSAGE_KEY (0x42443c5b)
+#define TIME_SYNC_MESSAGE_MAX_ORDINAL (4)
+#define TIME_SYNC_MESSAGE_MODULE_MESSAGE_KEY (0x4244767d)
 #define VERSION_MESSAGE_MAX_ORDINAL (6)
 #define VERSION_MESSAGE_MODULE_MESSAGE_KEY (0x42448366)
 #define WHOS_THERE_MESSAGE_MAX_ORDINAL (4)
@@ -373,6 +429,8 @@
 #define FLASH_PROGRAM_MESSAGE_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (4)
 #define GPIO_CONFIG_MESSAGE_PIN_CONFIGS_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (2)
 #define GPIO_PINS_MESSAGE_PORT_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (2)
+#define IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (24)
+#define I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (4)
 #define OSCOPE_DATA_MESSAGE_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (1)
 #define SPI_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (4)
 #define THERMISTOR_CONFIG_MESSAGE_CONFIG_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (20)
@@ -386,13 +444,16 @@
 #define FLASH_PROGRAM_MESSAGE_LENGTH (36)
 #define GPIO_CONFIG_MESSAGE_LENGTH (12)
 #define GPIO_PINS_MESSAGE_LENGTH (12)
+#define I_2_C_TRANSACTION_MESSAGE_LENGTH (24)
 #define ID_MESSAGE_LENGTH (12)
+#define IMU_DATA_MESSAGE_LENGTH (12)
 #define OSCOPE_CONFIG_MESSAGE_LENGTH (24)
 #define OSCOPE_DATA_MESSAGE_LENGTH (28)
 #define SPI_TRANSACTION_MESSAGE_LENGTH (24)
 #define THERMISTOR_CONFIG_MESSAGE_LENGTH (12)
 #define THERMISTOR_DATA_MESSAGE_LENGTH (12)
 #define TIME_MESSAGE_LENGTH (16)
+#define TIME_SYNC_MESSAGE_LENGTH (24)
 #define VERSION_MESSAGE_LENGTH (16)
 #define WHOS_THERE_MESSAGE_LENGTH (16)
 
@@ -418,12 +479,15 @@ const char FLASH_PROGRAM_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/flash_pr
 const char GPIO_CONFIG_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/gpio-pin-config";
 const char GPIO_PINS_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/gpio-pins";
 const char ID_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/id";
+const char IMU_DATA_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/imu-data";
+const char I_2_C_TRANSACTION_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/i2c-transaction";
 const char OSCOPE_CONFIG_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/oscope-config";
 const char OSCOPE_DATA_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/oscope-data";
 const char SPI_TRANSACTION_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/spi-transaction";
 const char THERMISTOR_CONFIG_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/thermistor-config";
 const char THERMISTOR_DATA_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/thermistor-data";
 const char TIME_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/time";
+const char TIME_SYNC_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/timesync";
 const char VERSION_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/version";
 const char WHOS_THERE_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/whos-there";
 
@@ -2195,6 +2259,189 @@ uint32_t getGpioPinsMessagePortSequenceLength(Bb * buf, BbBlock msg){
 	return getBbSequenceLength(buf, msg, i);
 }
 /**
+ * Adds a I 2 C Transaction Message to the end of the current buffer
+ *  A message to define an I2C transaction to be sent out
+ * @param buf - the message buffer to add the message to
+ * @param i2CDev
+ * @param i2CAddr
+ * @param numTxBytes
+ * @param numRxBytes
+ * @param transactionId -  Unique ID for the transaction
+ * @returns - the index of the new message.
+ */
+BbBlock addI2CTransactionMessage(Bb * buf, I2CDevBbEnum i2CDev, uint8_t i2CAddr, uint16_t numTxBytes, uint16_t numRxBytes, int32_t transactionId){
+	BbBlock msg = buf->length;
+	//Extend buffer to include the main message body before writing it
+	buf->length = msg + I_2_C_TRANSACTION_MESSAGE_LENGTH;
+	setBbUint32(buf, msg, I_2_C_TRANSACTION_MESSAGE_MODULE_MESSAGE_KEY_INDEX, I_2_C_TRANSACTION_MESSAGE_MODULE_MESSAGE_KEY);
+	setBbUint16(buf, msg, I_2_C_TRANSACTION_MESSAGE_LENGTH_INDEX, I_2_C_TRANSACTION_MESSAGE_LENGTH/4);//length field is measured in 4-byte words
+	setBbUint8(buf, msg, I_2_C_TRANSACTION_MESSAGE_MAX_ORDINAL_INDEX, I_2_C_TRANSACTION_MESSAGE_MAX_ORDINAL);
+	setBbUint8(buf, msg, I_2_C_TRANSACTION_MESSAGE_I_2_C_DEV_INDEX, i2CDev);
+	setBbUint8(buf, msg, I_2_C_TRANSACTION_MESSAGE_I_2_C_ADDR_INDEX, i2CAddr);
+	setBbUint16(buf, msg, I_2_C_TRANSACTION_MESSAGE_NUM_TX_BYTES_INDEX, numTxBytes);
+	setBbUint16(buf, msg, I_2_C_TRANSACTION_MESSAGE_NUM_RX_BYTES_INDEX, numRxBytes);
+	setBbInt32(buf, msg, I_2_C_TRANSACTION_MESSAGE_TRANSACTION_ID_INDEX, transactionId);
+	setBbUint16(buf, msg, I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_INDEX, BB_INVALID_BLOCK);//clear sequence header
+	return msg;
+}
+/**
+ * Tests if the current message has no fields present.
+ *  A message to define an I2C transaction to be sent out
+ */
+bool isI2CTransactionMessageEmpty(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) <= 2;//will always be length and ordinal fields
+}
+/**
+ * Tests if the current message has all defined fields present.
+ *  A message to define an I2C transaction to be sent out
+ */
+bool isI2CTransactionMessageFull(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) >= I_2_C_TRANSACTION_MESSAGE_MAX_ORDINAL;
+}
+/**
+ * A getter for the i2CDev field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+I2CDevBbEnum getI2CTransactionMessageI2CDev(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += I_2_C_TRANSACTION_MESSAGE_I_2_C_DEV_INDEX;
+	return getBbUint8(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the i2CDev field
+ */
+bool isI2CTransactionMessageI2CDevPresent(Bb * buf, BbBlock msg ){
+	return I_2_C_TRANSACTION_MESSAGE_I_2_C_DEV_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the i2CAddr field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint8_t getI2CTransactionMessageI2CAddr(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += I_2_C_TRANSACTION_MESSAGE_I_2_C_ADDR_INDEX;
+	return getBbUint8(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the i2CAddr field
+ */
+bool isI2CTransactionMessageI2CAddrPresent(Bb * buf, BbBlock msg ){
+	return I_2_C_TRANSACTION_MESSAGE_I_2_C_ADDR_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the numTxBytes field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint16_t getI2CTransactionMessageNumTxBytes(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += I_2_C_TRANSACTION_MESSAGE_NUM_TX_BYTES_INDEX;
+	return getBbUint16(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the numTxBytes field
+ */
+bool isI2CTransactionMessageNumTxBytesPresent(Bb * buf, BbBlock msg ){
+	return I_2_C_TRANSACTION_MESSAGE_NUM_TX_BYTES_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the numRxBytes field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint16_t getI2CTransactionMessageNumRxBytes(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += I_2_C_TRANSACTION_MESSAGE_NUM_RX_BYTES_INDEX;
+	return getBbUint16(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the numRxBytes field
+ */
+bool isI2CTransactionMessageNumRxBytesPresent(Bb * buf, BbBlock msg ){
+	return I_2_C_TRANSACTION_MESSAGE_NUM_RX_BYTES_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the transactionId field
+ *  Unique ID for the transaction
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+int32_t getI2CTransactionMessageTransactionId(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += I_2_C_TRANSACTION_MESSAGE_TRANSACTION_ID_INDEX;
+	return getBbInt32(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the transactionId field
+ *  Unique ID for the transaction
+ */
+bool isI2CTransactionMessageTransactionIdPresent(Bb * buf, BbBlock msg ){
+	return I_2_C_TRANSACTION_MESSAGE_TRANSACTION_ID_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the transactionData field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of transactionData sequence.
+ */
+uint32_t getI2CTransactionMessageTransactionData(Bb * buf, BbBlock msg , uint32_t i0){
+	uint16_t i = 0;
+	i += I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_INDEX;
+	return getBbUint32(buf, msg, i);
+}
+/**
+ * A setter for the transactionData field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of transactionData sequence.
+ * @param transactionData
+ */
+void setI2CTransactionMessageTransactionData(Bb * buf, BbBlock msg , uint32_t i0, uint32_t transactionData){
+	uint16_t i = 0;
+	i += I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_INDEX;
+	if(isBbBlockInvalid(i)){
+		return;//bail because a sequence was not initialized
+	}
+	setBbUint32(buf, msg, i, transactionData);
+}
+/**
+ * A function to initialize a I 2 C Transaction Data
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param n - the number of elements of this sequence
+ */
+void initI2CTransactionMessageTransactionData(Bb * buf, BbBlock msg, uint32_t n){
+	uint16_t i = 0;
+	i += I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_INDEX;
+	if(isBbBlockInvalid(i)){
+		return;//bail because a sequence was not initialized
+	}
+	//i is now the index of this sequence field header
+	uint32_t bs = I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT; //the 4 is to account for the length field that precedes the sequence data
+	initBbSequence(buf, msg, i, bs, n);
+}
+/**
+ * Gets the defined length of a sequence I 2 C Transaction Data
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @return - the number of elements in the sequence
+ */
+uint32_t getI2CTransactionMessageTransactionDataSequenceLength(Bb * buf, BbBlock msg){
+	uint16_t i = 0;
+	i += I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_INDEX;
+	if(isBbBlockInvalid(i)){
+		return 0;//bail because a sequence was not initialized
+	}
+	//i is now the index of this sequence field header
+	return getBbSequenceLength(buf, msg, i);
+}
+/**
  * Adds a Id Message to the end of the current buffer
  * A message to convey the unique ID of this devices
  * @param buf - the message buffer to add the message to
@@ -2245,6 +2492,227 @@ uint32_t getIdMessageId(Bb * buf, BbBlock msg ){
  */
 bool isIdMessageIdPresent(Bb * buf, BbBlock msg ){
 	return ID_MESSAGE_ID_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * Adds a Imu Data Message to the end of the current buffer
+ * A message to convey one or more coordinates
+ * @param buf - the message buffer to add the message to
+ * @returns - the index of the new message.
+ */
+BbBlock addImuDataMessage(Bb * buf){
+	BbBlock msg = buf->length;
+	//Extend buffer to include the main message body before writing it
+	buf->length = msg + IMU_DATA_MESSAGE_LENGTH;
+	setBbUint32(buf, msg, IMU_DATA_MESSAGE_MODULE_MESSAGE_KEY_INDEX, IMU_DATA_MESSAGE_MODULE_MESSAGE_KEY);
+	setBbUint16(buf, msg, IMU_DATA_MESSAGE_LENGTH_INDEX, IMU_DATA_MESSAGE_LENGTH/4);//length field is measured in 4-byte words
+	setBbUint8(buf, msg, IMU_DATA_MESSAGE_MAX_ORDINAL_INDEX, IMU_DATA_MESSAGE_MAX_ORDINAL);
+	setBbUint16(buf, msg, IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX, BB_INVALID_BLOCK);//clear sequence header
+	return msg;
+}
+/**
+ * Tests if the current message has no fields present.
+ * A message to convey one or more coordinates
+ */
+bool isImuDataMessageEmpty(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) <= 2;//will always be length and ordinal fields
+}
+/**
+ * Tests if the current message has all defined fields present.
+ * A message to convey one or more coordinates
+ */
+bool isImuDataMessageFull(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) >= IMU_DATA_MESSAGE_MAX_ORDINAL;
+}
+/**
+ * A getter for the x field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsX(Bb * buf, BbBlock msg , uint32_t i0){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += IMU_DATA_MESSAGE_COORDS_X_INDEX;
+	return getBbFloat32(buf, msg, i);
+}
+/**
+ * A setter for the x field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param x
+ */
+void setImuDataMessageCoordsX(Bb * buf, BbBlock msg , uint32_t i0, float x){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += IMU_DATA_MESSAGE_COORDS_X_INDEX;
+	if(isBbBlockInvalid(i)){
+		return;//bail because a sequence was not initialized
+	}
+	setBbFloat32(buf, msg, i, x);
+}
+/**
+ * A getter for the y field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsY(Bb * buf, BbBlock msg , uint32_t i0){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += IMU_DATA_MESSAGE_COORDS_Y_INDEX;
+	return getBbFloat32(buf, msg, i);
+}
+/**
+ * A setter for the y field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param y
+ */
+void setImuDataMessageCoordsY(Bb * buf, BbBlock msg , uint32_t i0, float y){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += IMU_DATA_MESSAGE_COORDS_Y_INDEX;
+	if(isBbBlockInvalid(i)){
+		return;//bail because a sequence was not initialized
+	}
+	setBbFloat32(buf, msg, i, y);
+}
+/**
+ * A getter for the z field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+float getImuDataMessageCoordsZ(Bb * buf, BbBlock msg , uint32_t i0){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += IMU_DATA_MESSAGE_COORDS_Z_INDEX;
+	return getBbFloat32(buf, msg, i);
+}
+/**
+ * A setter for the z field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param z
+ */
+void setImuDataMessageCoordsZ(Bb * buf, BbBlock msg , uint32_t i0, float z){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += IMU_DATA_MESSAGE_COORDS_Z_INDEX;
+	if(isBbBlockInvalid(i)){
+		return;//bail because a sequence was not initialized
+	}
+	setBbFloat32(buf, msg, i, z);
+}
+/**
+ * A getter for the unit field
+ * A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+UnitEnum getImuDataMessageCoordsUnit(Bb * buf, BbBlock msg , uint32_t i0){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += IMU_DATA_MESSAGE_COORDS_UNIT_INDEX;
+	return getBbUint8(buf, msg, i);
+}
+/**
+ * A setter for the unit field
+ * A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param unit - A selection of units for the setpoint.
+ * Mostly just to select between angular units and units that do not loop
+ * For now this is not inteded to stray beyond SI
+ */
+void setImuDataMessageCoordsUnit(Bb * buf, BbBlock msg , uint32_t i0, UnitEnum unit){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += IMU_DATA_MESSAGE_COORDS_UNIT_INDEX;
+	if(isBbBlockInvalid(i)){
+		return;//bail because a sequence was not initialized
+	}
+	setBbUint8(buf, msg, i, unit);
+}
+/**
+ * A getter for the time field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ */
+uint64_t getImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += IMU_DATA_MESSAGE_COORDS_TIME_INDEX;
+	return getBbUint64(buf, msg, i);
+}
+/**
+ * A setter for the time field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of coords sequence.
+ * @param time - a measure of time in 100ns increments since an epoch of January 1st 2000
+ */
+void setImuDataMessageCoordsTime(Bb * buf, BbBlock msg , uint32_t i0, uint64_t time){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += IMU_DATA_MESSAGE_COORDS_TIME_INDEX;
+	if(isBbBlockInvalid(i)){
+		return;//bail because a sequence was not initialized
+	}
+	setBbUint64(buf, msg, i, time);
+}
+/**
+ * A function to initialize a Coordinates
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param n - the number of elements of this sequence
+ */
+void initImuDataMessageCoords(Bb * buf, BbBlock msg, uint32_t n){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	if(isBbBlockInvalid(i)){
+		return;//bail because a sequence was not initialized
+	}
+	//i is now the index of this sequence field header
+	uint32_t bs = IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT; //the 4 is to account for the length field that precedes the sequence data
+	initBbSequence(buf, msg, i, bs, n);
+}
+/**
+ * Gets the defined length of a sequence Coordinates
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @return - the number of elements in the sequence
+ */
+uint32_t getImuDataMessageCoordsSequenceLength(Bb * buf, BbBlock msg){
+	uint16_t i = 0;
+	i += IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_INDEX;
+	if(isBbBlockInvalid(i)){
+		return 0;//bail because a sequence was not initialized
+	}
+	//i is now the index of this sequence field header
+	return getBbSequenceLength(buf, msg, i);
 }
 /**
  * Adds a Oscope Config Message to the end of the current buffer
@@ -3215,7 +3683,8 @@ uint32_t getThermistorDataMessageDataSequenceLength(Bb * buf, BbBlock msg){
 }
 /**
  * Adds a Time Message to the end of the current buffer
- * A message to convey the unique ID of this devices
+ * A message for time synchronization.
+ * This message will likely be deprecated soon. 
  * @param buf - the message buffer to add the message to
  * @param hostTime - time in milliseconds from program start according to the bus controller
  * @param localTime - time in milliseconds from program start according to sender of this packet
@@ -3234,14 +3703,16 @@ BbBlock addTimeMessage(Bb * buf, uint32_t hostTime, uint32_t localTime){
 }
 /**
  * Tests if the current message has no fields present.
- * A message to convey the unique ID of this devices
+ * A message for time synchronization.
+ * This message will likely be deprecated soon. 
  */
 bool isTimeMessageEmpty(Bb * buf, BbBlock msg){
 	return getBbMessageMaxOrdinal(buf, msg) <= 2;//will always be length and ordinal fields
 }
 /**
  * Tests if the current message has all defined fields present.
- * A message to convey the unique ID of this devices
+ * A message for time synchronization.
+ * This message will likely be deprecated soon. 
  */
 bool isTimeMessageFull(Bb * buf, BbBlock msg){
 	return getBbMessageMaxOrdinal(buf, msg) >= TIME_MESSAGE_MAX_ORDINAL;
@@ -3281,6 +3752,75 @@ uint32_t getTimeMessageLocalTime(Bb * buf, BbBlock msg ){
  */
 bool isTimeMessageLocalTimePresent(Bb * buf, BbBlock msg ){
 	return TIME_MESSAGE_LOCAL_TIME_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * Adds a Time Sync Message to the end of the current buffer
+ * An improved message for time synchronization that uses the new Time64 deined type
+ * @param buf - the message buffer to add the message to
+ * @param senderTime - a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param lastReceivedTime - a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @returns - the index of the new message.
+ */
+BbBlock addTimeSyncMessage(Bb * buf, uint64_t senderTime, uint64_t lastReceivedTime){
+	BbBlock msg = buf->length;
+	//Extend buffer to include the main message body before writing it
+	buf->length = msg + TIME_SYNC_MESSAGE_LENGTH;
+	setBbUint32(buf, msg, TIME_SYNC_MESSAGE_MODULE_MESSAGE_KEY_INDEX, TIME_SYNC_MESSAGE_MODULE_MESSAGE_KEY);
+	setBbUint16(buf, msg, TIME_SYNC_MESSAGE_LENGTH_INDEX, TIME_SYNC_MESSAGE_LENGTH/4);//length field is measured in 4-byte words
+	setBbUint8(buf, msg, TIME_SYNC_MESSAGE_MAX_ORDINAL_INDEX, TIME_SYNC_MESSAGE_MAX_ORDINAL);
+	setBbUint64(buf, msg, TIME_SYNC_MESSAGE_SENDER_TIME_INDEX, senderTime);
+	setBbUint64(buf, msg, TIME_SYNC_MESSAGE_LAST_RECEIVED_TIME_INDEX, lastReceivedTime);
+	return msg;
+}
+/**
+ * Tests if the current message has no fields present.
+ * An improved message for time synchronization that uses the new Time64 deined type
+ */
+bool isTimeSyncMessageEmpty(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) <= 2;//will always be length and ordinal fields
+}
+/**
+ * Tests if the current message has all defined fields present.
+ * An improved message for time synchronization that uses the new Time64 deined type
+ */
+bool isTimeSyncMessageFull(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) >= TIME_SYNC_MESSAGE_MAX_ORDINAL;
+}
+/**
+ * A getter for the senderTime field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint64_t getTimeSyncMessageSenderTime(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += TIME_SYNC_MESSAGE_SENDER_TIME_INDEX;
+	return getBbUint64(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the senderTime field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ */
+bool isTimeSyncMessageSenderTimePresent(Bb * buf, BbBlock msg ){
+	return TIME_SYNC_MESSAGE_SENDER_TIME_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the lastReceivedTime field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint64_t getTimeSyncMessageLastReceivedTime(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += TIME_SYNC_MESSAGE_LAST_RECEIVED_TIME_INDEX;
+	return getBbUint64(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the lastReceivedTime field
+ * a measure of time in 100ns increments since an epoch of January 1st 2000
+ */
+bool isTimeSyncMessageLastReceivedTimePresent(Bb * buf, BbBlock msg ){
+	return TIME_SYNC_MESSAGE_LAST_RECEIVED_TIME_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
 }
 /**
  * Adds a Version Message to the end of the current buffer
