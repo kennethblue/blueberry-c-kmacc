@@ -56,6 +56,7 @@
 #define BLUEBERRY_DEVICES_IMU_DATA_MESSAGE_KEY (0x424465a1)
 #define BLUEBERRY_DEVICES_OSCOPE_CONFIG_MESSAGE_KEY (0x42447e1d)
 #define BLUEBERRY_DEVICES_OSCOPE_DATA_MESSAGE_KEY (0x4244831d)
+#define BLUEBERRY_DEVICES_SONAR_A_SCAN_MESSAGE_KEY (0x4244c136)
 #define BLUEBERRY_DEVICES_SPI_TRANSACTION_MESSAGE_KEY (0x424425ed)
 #define BLUEBERRY_DEVICES_THERMISTOR_CONFIG_MESSAGE_KEY (0x4244aae3)
 #define BLUEBERRY_DEVICES_THERMISTOR_DATA_MESSAGE_KEY (0x4244d51a)
@@ -306,6 +307,16 @@ typedef enum {
 	TRIGGER_POS_ENUM_FOURTH_QUARTER_TRIG_POS = 0x0003, 
 } TriggerPosEnum;
 
+/**
+ * An enum for conveying the type of data in an A-scan
+ */
+typedef enum {
+	A_SCAN_TYPE_UNDEFINED = 0x0000, 
+	A_SCAN_TYPE_RAW_RF = 0x0001, 
+	A_SCAN_TYPE_IQ_DEMOD = 0x0002, 
+	A_SCAN_TYPE_RECTIFIER_DEMOD = 0x0003, 
+} AScanTypeEnum;
+
 typedef enum {
 	CLOCK_SPEC_BB_SPI_CPOL_0_CPHA_0 = 0x0000, 
 	CLOCK_SPEC_BB_SPI_CPOL_0_CPHA_1 = 0x0001, 
@@ -378,6 +389,7 @@ extern const char ID_MESSAGE_TOPIC[];
 extern const char IMU_DATA_MESSAGE_TOPIC[];
 extern const char OSCOPE_CONFIG_MESSAGE_TOPIC[];
 extern const char OSCOPE_DATA_MESSAGE_TOPIC[];
+extern const char SONAR_A_SCAN_MESSAGE_TOPIC[];
 extern const char SPI_TRANSACTION_MESSAGE_TOPIC[];
 extern const char THERMISTOR_CONFIG_MESSAGE_TOPIC[];
 extern const char THERMISTOR_DATA_MESSAGE_TOPIC[];
@@ -501,6 +513,25 @@ BbBlock addOscopeConfigMessage(Bb * buf, float period, uint8_t triggerSource, fl
  * @returns - the index of the new message.
  */
 BbBlock addOscopeDataMessage(Bb * buf, uint8_t channel, uint32_t captureId, float gain, float offset, uint8_t source);
+/**
+ * Adds a Sonar A Scan Message to the end of the current buffer
+ * A message to convey a single A-scan of sonar data
+ * This doesn't contain any info about the data, like what transmit pulse was used or whatever
+ * Let's assume for now that info will be transferred some other way
+ * This message assumes that the  total a-scan will be sent over multiple messages
+ * This message can be used as a request if captureId and firstSample index are specified and zero
+ * In this case, sampleRate and data can be NAN, empty respectively, but they don't really matter
+ * It is assumed that a device will not respond right away if it doesn't have data yet, 
+ * instead it will simply drop the message and wait for a subsequent one.
+ * @param buf - the message buffer to add the message to
+ * @param captureId - a unique identifier of the entire a-scan data set. This is set by the device.
+ * @param firstSampleIndex - the index of the first element of the sequence.
+ * @param totalSampleNum - the number of datapoints in this data set. This is defined by the device
+ * @param sampleRate - the sample rate reported from the data source
+ * @param type - An enum for conveying the type of data in an A-scan
+ * @returns - the index of the new message.
+ */
+BbBlock addSonarAScanMessage(Bb * buf, uint32_t captureId, uint32_t firstSampleIndex, uint32_t totalSampleNum, float sampleRate, AScanTypeEnum type);
 /**
  * Adds a Spi Transaction Message to the end of the current buffer
  *  A message to define an SPI transaction to be sent out
@@ -3201,6 +3232,136 @@ void initOscopeDataMessageData(Bb * buf, BbBlock msg, uint32_t n);
  * @return - the number of elements in the sequence
  */
 uint32_t getOscopeDataMessageDataSequenceLength(Bb * buf, BbBlock msg);
+/**
+ * Tests if the current message has no fields present.
+ * A message to convey a single A-scan of sonar data
+ * This doesn't contain any info about the data, like what transmit pulse was used or whatever
+ * Let's assume for now that info will be transferred some other way
+ * This message assumes that the  total a-scan will be sent over multiple messages
+ * This message can be used as a request if captureId and firstSample index are specified and zero
+ * In this case, sampleRate and data can be NAN, empty respectively, but they don't really matter
+ * It is assumed that a device will not respond right away if it doesn't have data yet, 
+ * instead it will simply drop the message and wait for a subsequent one.
+ */
+bool isSonarAScanMessageEmpty(Bb * buf, BbBlock msg);
+/**
+ * Tests if the current message has all defined fields present.
+ * A message to convey a single A-scan of sonar data
+ * This doesn't contain any info about the data, like what transmit pulse was used or whatever
+ * Let's assume for now that info will be transferred some other way
+ * This message assumes that the  total a-scan will be sent over multiple messages
+ * This message can be used as a request if captureId and firstSample index are specified and zero
+ * In this case, sampleRate and data can be NAN, empty respectively, but they don't really matter
+ * It is assumed that a device will not respond right away if it doesn't have data yet, 
+ * instead it will simply drop the message and wait for a subsequent one.
+ */
+bool isSonarAScanMessageFull(Bb * buf, BbBlock msg);
+/**
+ * A getter for the captureId field
+ * a unique identifier of the entire a-scan data set. This is set by the device.
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint32_t getSonarAScanMessageCaptureId(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the captureId field
+ * a unique identifier of the entire a-scan data set. This is set by the device.
+ */
+bool isSonarAScanMessageCaptureIdPresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the firstSampleIndex field
+ * the index of the first element of the sequence.
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint32_t getSonarAScanMessageFirstSampleIndex(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the firstSampleIndex field
+ * the index of the first element of the sequence.
+ */
+bool isSonarAScanMessageFirstSampleIndexPresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the totalSampleNum field
+ * the number of datapoints in this data set. This is defined by the device
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint32_t getSonarAScanMessageTotalSampleNum(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the totalSampleNum field
+ * the number of datapoints in this data set. This is defined by the device
+ */
+bool isSonarAScanMessageTotalSampleNumPresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the sampleRate field
+ * the sample rate reported from the data source
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+float getSonarAScanMessageSampleRate(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the sampleRate field
+ * the sample rate reported from the data source
+ */
+bool isSonarAScanMessageSampleRatePresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the data field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of data sequence.
+ */
+float getSonarAScanMessageData(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the data field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of data sequence.
+ * @param data
+ */
+void setSonarAScanMessageData(Bb * buf, BbBlock msg , uint32_t i0, float data);
+/**
+ * A getter for the data field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of data sequence.
+ */
+float getSonarAScanMessageData(Bb * buf, BbBlock msg , uint32_t i0);
+/**
+ * A setter for the data field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of data sequence.
+ * @param data
+ */
+void setSonarAScanMessageData(Bb * buf, BbBlock msg , uint32_t i0, float data);
+/**
+ * A getter for the type field
+ * An enum for conveying the type of data in an A-scan
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+AScanTypeEnum getSonarAScanMessageType(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the type field
+ * An enum for conveying the type of data in an A-scan
+ */
+bool isSonarAScanMessageTypePresent(Bb * buf, BbBlock msg );
+/**
+ * A function to initialize a Float Sequence
+ * a handy sequence of 32-bit floats. This is like an array but variable length
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param n - the number of elements of this sequence
+ */
+void initSonarAScanMessageData(Bb * buf, BbBlock msg, uint32_t n);
+/**
+ * Gets the defined length of a sequence Float Sequence
+ * a handy sequence of 32-bit floats. This is like an array but variable length
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @return - the number of elements in the sequence
+ */
+uint32_t getSonarAScanMessageDataSequenceLength(Bb * buf, BbBlock msg);
 /**
  * Tests if the current message has no fields present.
  *  A message to define an SPI transaction to be sent out

@@ -156,6 +156,16 @@
 #define OSCOPE_DATA_MESSAGE_MODULE_MESSAGE_KEY_INDEX (0)
 #define OSCOPE_DATA_MESSAGE_OFFSET_INDEX (20)
 #define OSCOPE_DATA_MESSAGE_SOURCE_INDEX (9)
+#define SONAR_A_SCAN_MESSAGE_CAPTURE_ID_INDEX (8)
+#define SONAR_A_SCAN_MESSAGE_DATA_INDEX (0)
+#define SONAR_A_SCAN_MESSAGE_DATA_PLACEHOLDER_INDEX (24)
+#define SONAR_A_SCAN_MESSAGE_FIRST_SAMPLE_INDEX_INDEX (12)
+#define SONAR_A_SCAN_MESSAGE_LENGTH_INDEX (4)
+#define SONAR_A_SCAN_MESSAGE_MAX_ORDINAL_INDEX (6)
+#define SONAR_A_SCAN_MESSAGE_MODULE_MESSAGE_KEY_INDEX (0)
+#define SONAR_A_SCAN_MESSAGE_SAMPLE_RATE_INDEX (20)
+#define SONAR_A_SCAN_MESSAGE_TOTAL_SAMPLE_NUM_INDEX (16)
+#define SONAR_A_SCAN_MESSAGE_TYPE_INDEX (28)
 #define SPI_TRANSACTION_MESSAGE_BAUD_DIV_INDEX (10)
 #define SPI_TRANSACTION_MESSAGE_CLOCK_SPEC_INDEX (11)
 #define SPI_TRANSACTION_MESSAGE_CS_PIN_INDEX (9)
@@ -321,6 +331,15 @@
 #define OSCOPE_DATA_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
 #define OSCOPE_DATA_MESSAGE_OFFSET_ORDINAL (6)
 #define OSCOPE_DATA_MESSAGE_SOURCE_ORDINAL (7)
+#define SONAR_A_SCAN_MESSAGE_CAPTURE_ID_ORDINAL (3)
+#define SONAR_A_SCAN_MESSAGE_DATA_PLACEHOLDER_ORDINAL (7)
+#define SONAR_A_SCAN_MESSAGE_FIRST_SAMPLE_INDEX_ORDINAL (4)
+#define SONAR_A_SCAN_MESSAGE_LENGTH_ORDINAL (1)
+#define SONAR_A_SCAN_MESSAGE_MAX_ORDINAL_ORDINAL (2)
+#define SONAR_A_SCAN_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
+#define SONAR_A_SCAN_MESSAGE_SAMPLE_RATE_ORDINAL (6)
+#define SONAR_A_SCAN_MESSAGE_TOTAL_SAMPLE_NUM_ORDINAL (5)
+#define SONAR_A_SCAN_MESSAGE_TYPE_ORDINAL (8)
 #define SPI_TRANSACTION_MESSAGE_BAUD_DIV_ORDINAL (5)
 #define SPI_TRANSACTION_MESSAGE_CLOCK_SPEC_ORDINAL (6)
 #define SPI_TRANSACTION_MESSAGE_CS_PIN_ORDINAL (4)
@@ -397,6 +416,8 @@
 #define OSCOPE_CONFIG_MESSAGE_MODULE_MESSAGE_KEY (0x42447e1d)
 #define OSCOPE_DATA_MESSAGE_MAX_ORDINAL (8)
 #define OSCOPE_DATA_MESSAGE_MODULE_MESSAGE_KEY (0x4244831d)
+#define SONAR_A_SCAN_MESSAGE_MAX_ORDINAL (8)
+#define SONAR_A_SCAN_MESSAGE_MODULE_MESSAGE_KEY (0x4244c136)
 #define SPI_TRANSACTION_MESSAGE_MAX_ORDINAL (10)
 #define SPI_TRANSACTION_MESSAGE_MODULE_MESSAGE_KEY (0x424425ed)
 #define THERMISTOR_CONFIG_MESSAGE_MAX_ORDINAL (3)
@@ -432,6 +453,7 @@
 #define IMU_DATA_MESSAGE_COORDS_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (24)
 #define I_2_C_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (4)
 #define OSCOPE_DATA_MESSAGE_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (1)
+#define SONAR_A_SCAN_MESSAGE_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (4)
 #define SPI_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (4)
 #define THERMISTOR_CONFIG_MESSAGE_CONFIG_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (20)
 #define THERMISTOR_DATA_MESSAGE_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (8)
@@ -449,6 +471,7 @@
 #define IMU_DATA_MESSAGE_LENGTH (12)
 #define OSCOPE_CONFIG_MESSAGE_LENGTH (24)
 #define OSCOPE_DATA_MESSAGE_LENGTH (28)
+#define SONAR_A_SCAN_MESSAGE_LENGTH (32)
 #define SPI_TRANSACTION_MESSAGE_LENGTH (24)
 #define THERMISTOR_CONFIG_MESSAGE_LENGTH (12)
 #define THERMISTOR_DATA_MESSAGE_LENGTH (12)
@@ -483,6 +506,7 @@ const char IMU_DATA_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/imu-data";
 const char I_2_C_TRANSACTION_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/i2c-transaction";
 const char OSCOPE_CONFIG_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/oscope-config";
 const char OSCOPE_DATA_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/oscope-data";
+const char SONAR_A_SCAN_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/sonar-a-scan";
 const char SPI_TRANSACTION_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/spi-transaction";
 const char THERMISTOR_CONFIG_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/thermistor-config";
 const char THERMISTOR_DATA_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/thermistor-data";
@@ -3041,6 +3065,220 @@ void initOscopeDataMessageData(Bb * buf, BbBlock msg, uint32_t n){
 uint32_t getOscopeDataMessageDataSequenceLength(Bb * buf, BbBlock msg){
 	uint16_t i = 0;
 	i += OSCOPE_DATA_MESSAGE_DATA_PLACEHOLDER_INDEX;
+	if(isBbBlockInvalid(i)){
+		return 0;//bail because a sequence was not initialized
+	}
+	//i is now the index of this sequence field header
+	return getBbSequenceLength(buf, msg, i);
+}
+/**
+ * Adds a Sonar A Scan Message to the end of the current buffer
+ * A message to convey a single A-scan of sonar data
+ * This doesn't contain any info about the data, like what transmit pulse was used or whatever
+ * Let's assume for now that info will be transferred some other way
+ * This message assumes that the  total a-scan will be sent over multiple messages
+ * This message can be used as a request if captureId and firstSample index are specified and zero
+ * In this case, sampleRate and data can be NAN, empty respectively, but they don't really matter
+ * It is assumed that a device will not respond right away if it doesn't have data yet, 
+ * instead it will simply drop the message and wait for a subsequent one.
+ * @param buf - the message buffer to add the message to
+ * @param captureId - a unique identifier of the entire a-scan data set. This is set by the device.
+ * @param firstSampleIndex - the index of the first element of the sequence.
+ * @param totalSampleNum - the number of datapoints in this data set. This is defined by the device
+ * @param sampleRate - the sample rate reported from the data source
+ * @param type - An enum for conveying the type of data in an A-scan
+ * @returns - the index of the new message.
+ */
+BbBlock addSonarAScanMessage(Bb * buf, uint32_t captureId, uint32_t firstSampleIndex, uint32_t totalSampleNum, float sampleRate, AScanTypeEnum type){
+	BbBlock msg = buf->length;
+	//Extend buffer to include the main message body before writing it
+	buf->length = msg + SONAR_A_SCAN_MESSAGE_LENGTH;
+	setBbUint32(buf, msg, SONAR_A_SCAN_MESSAGE_MODULE_MESSAGE_KEY_INDEX, SONAR_A_SCAN_MESSAGE_MODULE_MESSAGE_KEY);
+	setBbUint16(buf, msg, SONAR_A_SCAN_MESSAGE_LENGTH_INDEX, SONAR_A_SCAN_MESSAGE_LENGTH/4);//length field is measured in 4-byte words
+	setBbUint8(buf, msg, SONAR_A_SCAN_MESSAGE_MAX_ORDINAL_INDEX, SONAR_A_SCAN_MESSAGE_MAX_ORDINAL);
+	setBbUint32(buf, msg, SONAR_A_SCAN_MESSAGE_CAPTURE_ID_INDEX, captureId);
+	setBbUint32(buf, msg, SONAR_A_SCAN_MESSAGE_FIRST_SAMPLE_INDEX_INDEX, firstSampleIndex);
+	setBbUint32(buf, msg, SONAR_A_SCAN_MESSAGE_TOTAL_SAMPLE_NUM_INDEX, totalSampleNum);
+	setBbFloat32(buf, msg, SONAR_A_SCAN_MESSAGE_SAMPLE_RATE_INDEX, sampleRate);
+	setBbUint8(buf, msg, SONAR_A_SCAN_MESSAGE_TYPE_INDEX, type);
+	setBbUint16(buf, msg, SONAR_A_SCAN_MESSAGE_DATA_PLACEHOLDER_INDEX, BB_INVALID_BLOCK);//clear sequence header
+	return msg;
+}
+/**
+ * Tests if the current message has no fields present.
+ * A message to convey a single A-scan of sonar data
+ * This doesn't contain any info about the data, like what transmit pulse was used or whatever
+ * Let's assume for now that info will be transferred some other way
+ * This message assumes that the  total a-scan will be sent over multiple messages
+ * This message can be used as a request if captureId and firstSample index are specified and zero
+ * In this case, sampleRate and data can be NAN, empty respectively, but they don't really matter
+ * It is assumed that a device will not respond right away if it doesn't have data yet, 
+ * instead it will simply drop the message and wait for a subsequent one.
+ */
+bool isSonarAScanMessageEmpty(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) <= 2;//will always be length and ordinal fields
+}
+/**
+ * Tests if the current message has all defined fields present.
+ * A message to convey a single A-scan of sonar data
+ * This doesn't contain any info about the data, like what transmit pulse was used or whatever
+ * Let's assume for now that info will be transferred some other way
+ * This message assumes that the  total a-scan will be sent over multiple messages
+ * This message can be used as a request if captureId and firstSample index are specified and zero
+ * In this case, sampleRate and data can be NAN, empty respectively, but they don't really matter
+ * It is assumed that a device will not respond right away if it doesn't have data yet, 
+ * instead it will simply drop the message and wait for a subsequent one.
+ */
+bool isSonarAScanMessageFull(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) >= SONAR_A_SCAN_MESSAGE_MAX_ORDINAL;
+}
+/**
+ * A getter for the captureId field
+ * a unique identifier of the entire a-scan data set. This is set by the device.
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint32_t getSonarAScanMessageCaptureId(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += SONAR_A_SCAN_MESSAGE_CAPTURE_ID_INDEX;
+	return getBbUint32(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the captureId field
+ * a unique identifier of the entire a-scan data set. This is set by the device.
+ */
+bool isSonarAScanMessageCaptureIdPresent(Bb * buf, BbBlock msg ){
+	return SONAR_A_SCAN_MESSAGE_CAPTURE_ID_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the firstSampleIndex field
+ * the index of the first element of the sequence.
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint32_t getSonarAScanMessageFirstSampleIndex(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += SONAR_A_SCAN_MESSAGE_FIRST_SAMPLE_INDEX_INDEX;
+	return getBbUint32(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the firstSampleIndex field
+ * the index of the first element of the sequence.
+ */
+bool isSonarAScanMessageFirstSampleIndexPresent(Bb * buf, BbBlock msg ){
+	return SONAR_A_SCAN_MESSAGE_FIRST_SAMPLE_INDEX_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the totalSampleNum field
+ * the number of datapoints in this data set. This is defined by the device
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint32_t getSonarAScanMessageTotalSampleNum(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += SONAR_A_SCAN_MESSAGE_TOTAL_SAMPLE_NUM_INDEX;
+	return getBbUint32(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the totalSampleNum field
+ * the number of datapoints in this data set. This is defined by the device
+ */
+bool isSonarAScanMessageTotalSampleNumPresent(Bb * buf, BbBlock msg ){
+	return SONAR_A_SCAN_MESSAGE_TOTAL_SAMPLE_NUM_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the sampleRate field
+ * the sample rate reported from the data source
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+float getSonarAScanMessageSampleRate(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += SONAR_A_SCAN_MESSAGE_SAMPLE_RATE_INDEX;
+	return getBbFloat32(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the sampleRate field
+ * the sample rate reported from the data source
+ */
+bool isSonarAScanMessageSampleRatePresent(Bb * buf, BbBlock msg ){
+	return SONAR_A_SCAN_MESSAGE_SAMPLE_RATE_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the data field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of data sequence.
+ */
+float getSonarAScanMessageData(Bb * buf, BbBlock msg , uint32_t i0){
+	uint16_t i = 0;
+	i += SONAR_A_SCAN_MESSAGE_DATA_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += SONAR_A_SCAN_MESSAGE_DATA_INDEX;
+	return getBbFloat32(buf, msg, i);
+}
+/**
+ * A setter for the data field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param i0 - index of data sequence.
+ * @param data
+ */
+void setSonarAScanMessageData(Bb * buf, BbBlock msg , uint32_t i0, float data){
+	uint16_t i = 0;
+	i += SONAR_A_SCAN_MESSAGE_DATA_PLACEHOLDER_INDEX;
+	i = getBbSequenceElementIndex(buf, msg, i, i0);
+	i += SONAR_A_SCAN_MESSAGE_DATA_INDEX;
+	if(isBbBlockInvalid(i)){
+		return;//bail because a sequence was not initialized
+	}
+	setBbFloat32(buf, msg, i, data);
+}
+/**
+ * A getter for the type field
+ * An enum for conveying the type of data in an A-scan
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+AScanTypeEnum getSonarAScanMessageType(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += SONAR_A_SCAN_MESSAGE_TYPE_INDEX;
+	return getBbUint8(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the type field
+ * An enum for conveying the type of data in an A-scan
+ */
+bool isSonarAScanMessageTypePresent(Bb * buf, BbBlock msg ){
+	return SONAR_A_SCAN_MESSAGE_TYPE_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A function to initialize a Float Sequence
+ * a handy sequence of 32-bit floats. This is like an array but variable length
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @param n - the number of elements of this sequence
+ */
+void initSonarAScanMessageData(Bb * buf, BbBlock msg, uint32_t n){
+	uint16_t i = 0;
+	i += SONAR_A_SCAN_MESSAGE_DATA_PLACEHOLDER_INDEX;
+	if(isBbBlockInvalid(i)){
+		return;//bail because a sequence was not initialized
+	}
+	//i is now the index of this sequence field header
+	uint32_t bs = SONAR_A_SCAN_MESSAGE_DATA_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT; //the 4 is to account for the length field that precedes the sequence data
+	initBbSequence(buf, msg, i, bs, n);
+}
+/**
+ * Gets the defined length of a sequence Float Sequence
+ * a handy sequence of 32-bit floats. This is like an array but variable length
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ * @return - the number of elements in the sequence
+ */
+uint32_t getSonarAScanMessageDataSequenceLength(Bb * buf, BbBlock msg){
+	uint16_t i = 0;
+	i += SONAR_A_SCAN_MESSAGE_DATA_PLACEHOLDER_INDEX;
 	if(isBbBlockInvalid(i)){
 		return 0;//bail because a sequence was not initialized
 	}
