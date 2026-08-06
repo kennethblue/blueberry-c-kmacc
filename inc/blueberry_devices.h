@@ -315,6 +315,8 @@ typedef enum {
 	A_SCAN_TYPE_RAW_RF = 0x0001, 
 	A_SCAN_TYPE_IQ_DEMOD = 0x0002, 
 	A_SCAN_TYPE_RECTIFIER_DEMOD = 0x0003, 
+	A_SCAN_TYPE_MIN_MAX = 0x0004, 
+	A_SCAN_TYPE_RAW_CURRENT = 0x0005, 
 } AScanTypeEnum;
 
 typedef enum {
