@@ -379,6 +379,7 @@ typedef enum {
 	HW_TYPE_GIGABOARD = 0x0005, 
 	HW_TYPE_BLUE_BRIDGE = 0x0006, 
 	HW_TYPE_POGOBRAIN = 0x0007, 
+	HW_TYPE_PING_DEV_KIT = 0x0008, 
 } HwTypeEnum;
 
 typedef enum {
