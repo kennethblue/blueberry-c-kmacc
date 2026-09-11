@@ -178,6 +178,16 @@
 #define SPI_TRANSACTION_MESSAGE_TRANSACTION_DATA_INDEX (0)
 #define SPI_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_INDEX (20)
 #define SPI_TRANSACTION_MESSAGE_TRANSACTION_ID_INDEX (16)
+#define TCS_3400_DATA_16_MESSAGE_DATA_INDEX (10)
+#define TCS_3400_DATA_16_MESSAGE_LENGTH_INDEX (4)
+#define TCS_3400_DATA_16_MESSAGE_MAX_ORDINAL_INDEX (6)
+#define TCS_3400_DATA_16_MESSAGE_MODULE_MESSAGE_KEY_INDEX (0)
+#define TCS_3400_DATA_16_MESSAGE_PARAM_INDEX (8)
+#define TCS_3400_DATA_8_MESSAGE_DATA_INDEX (9)
+#define TCS_3400_DATA_8_MESSAGE_LENGTH_INDEX (4)
+#define TCS_3400_DATA_8_MESSAGE_MAX_ORDINAL_INDEX (6)
+#define TCS_3400_DATA_8_MESSAGE_MODULE_MESSAGE_KEY_INDEX (0)
+#define TCS_3400_DATA_8_MESSAGE_PARAM_INDEX (8)
 #define THERMISTOR_CONFIG_MESSAGE_CONFIG_ADC_CHANNEL_INDEX (2)
 #define THERMISTOR_CONFIG_MESSAGE_CONFIG_CHANNEL_INDEX (0)
 #define THERMISTOR_CONFIG_MESSAGE_CONFIG_C_0_INDEX (4)
@@ -208,6 +218,8 @@
 #define TIME_SYNC_MESSAGE_SENDER_TIME_INDEX (8)
 #define TIME_SYNC_MESSAGE_SENDER_TIME_INDEX (8)
 #define VERSION_MESSAGE_FIRMWARE_VERSION_INDEX (8)
+#define VERSION_MESSAGE_GIT_DIRTY_INDEX (20)
+#define VERSION_MESSAGE_GIT_HASH_INDEX (16)
 #define VERSION_MESSAGE_HARDWARE_REV_INDEX (12)
 #define VERSION_MESSAGE_HARDWARE_TYPE_INDEX (14)
 #define VERSION_MESSAGE_LENGTH_INDEX (4)
@@ -351,6 +363,16 @@
 #define SPI_TRANSACTION_MESSAGE_SPI_DEV_ORDINAL (3)
 #define SPI_TRANSACTION_MESSAGE_TRANSACTION_DATA_PLACEHOLDER_ORDINAL (10)
 #define SPI_TRANSACTION_MESSAGE_TRANSACTION_ID_ORDINAL (9)
+#define TCS_3400_DATA_16_MESSAGE_DATA_ORDINAL (4)
+#define TCS_3400_DATA_16_MESSAGE_LENGTH_ORDINAL (1)
+#define TCS_3400_DATA_16_MESSAGE_MAX_ORDINAL_ORDINAL (2)
+#define TCS_3400_DATA_16_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
+#define TCS_3400_DATA_16_MESSAGE_PARAM_ORDINAL (3)
+#define TCS_3400_DATA_8_MESSAGE_DATA_ORDINAL (4)
+#define TCS_3400_DATA_8_MESSAGE_LENGTH_ORDINAL (1)
+#define TCS_3400_DATA_8_MESSAGE_MAX_ORDINAL_ORDINAL (2)
+#define TCS_3400_DATA_8_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
+#define TCS_3400_DATA_8_MESSAGE_PARAM_ORDINAL (3)
 #define THERMISTOR_CONFIG_MESSAGE_CONFIG_ADC_CHANNEL_ORDINAL (3)
 #define THERMISTOR_CONFIG_MESSAGE_CONFIG_CHANNEL_ORDINAL (3)
 #define THERMISTOR_CONFIG_MESSAGE_CONFIG_C_0_ORDINAL (3)
@@ -379,6 +401,8 @@
 #define TIME_SYNC_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
 #define TIME_SYNC_MESSAGE_SENDER_TIME_ORDINAL (3)
 #define VERSION_MESSAGE_FIRMWARE_VERSION_ORDINAL (3)
+#define VERSION_MESSAGE_GIT_DIRTY_ORDINAL (8)
+#define VERSION_MESSAGE_GIT_HASH_ORDINAL (7)
 #define VERSION_MESSAGE_HARDWARE_REV_ORDINAL (4)
 #define VERSION_MESSAGE_HARDWARE_TYPE_ORDINAL (5)
 #define VERSION_MESSAGE_LENGTH_ORDINAL (1)
@@ -420,6 +444,10 @@
 #define SONAR_A_SCAN_MESSAGE_MODULE_MESSAGE_KEY (0x4244c136)
 #define SPI_TRANSACTION_MESSAGE_MAX_ORDINAL (10)
 #define SPI_TRANSACTION_MESSAGE_MODULE_MESSAGE_KEY (0x424425ed)
+#define TCS_3400_DATA_16_MESSAGE_MAX_ORDINAL (4)
+#define TCS_3400_DATA_16_MESSAGE_MODULE_MESSAGE_KEY (0x42446efe)
+#define TCS_3400_DATA_8_MESSAGE_MAX_ORDINAL (4)
+#define TCS_3400_DATA_8_MESSAGE_MODULE_MESSAGE_KEY (0x4244c342)
 #define THERMISTOR_CONFIG_MESSAGE_MAX_ORDINAL (3)
 #define THERMISTOR_CONFIG_MESSAGE_MODULE_MESSAGE_KEY (0x4244aae3)
 #define THERMISTOR_DATA_MESSAGE_MAX_ORDINAL (3)
@@ -428,7 +456,7 @@
 #define TIME_MESSAGE_MODULE_MESSAGE_KEY (0x42443c5b)
 #define TIME_SYNC_MESSAGE_MAX_ORDINAL (4)
 #define TIME_SYNC_MESSAGE_MODULE_MESSAGE_KEY (0x4244767d)
-#define VERSION_MESSAGE_MAX_ORDINAL (6)
+#define VERSION_MESSAGE_MAX_ORDINAL (8)
 #define VERSION_MESSAGE_MODULE_MESSAGE_KEY (0x42448366)
 #define WHOS_THERE_MESSAGE_MAX_ORDINAL (4)
 #define WHOS_THERE_MESSAGE_MODULE_MESSAGE_KEY (0x42441971)
@@ -439,6 +467,7 @@
 #define OSCOPE_CONFIG_MESSAGE_RISING_NOT_FALLING_MASK (1 << 0)
 #define SPI_TRANSACTION_MESSAGE_DE_ASSERT_CS_MASK (1 << 0)
 #define THERMISTOR_CONFIG_MESSAGE_CONFIG_ENABLED_MASK (1 << 0)
+#define VERSION_MESSAGE_GIT_DIRTY_MASK (1 << 0)
 
 //Add sequence element byte count
 #define ADC_CONFIG_MESSAGE_CONFIG_PLACEHOLDER_SEQUENCE_ELEMENT_BYTE_COUNT (16)
@@ -473,11 +502,13 @@
 #define OSCOPE_DATA_MESSAGE_LENGTH (28)
 #define SONAR_A_SCAN_MESSAGE_LENGTH (32)
 #define SPI_TRANSACTION_MESSAGE_LENGTH (24)
+#define TCS_3400_DATA_16_MESSAGE_LENGTH (12)
+#define TCS_3400_DATA_8_MESSAGE_LENGTH (12)
 #define THERMISTOR_CONFIG_MESSAGE_LENGTH (12)
 #define THERMISTOR_DATA_MESSAGE_LENGTH (12)
 #define TIME_MESSAGE_LENGTH (16)
 #define TIME_SYNC_MESSAGE_LENGTH (24)
-#define VERSION_MESSAGE_LENGTH (16)
+#define VERSION_MESSAGE_LENGTH (24)
 #define WHOS_THERE_MESSAGE_LENGTH (16)
 
 //*************************************************************************************
@@ -508,6 +539,8 @@ const char OSCOPE_CONFIG_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/oscope-c
 const char OSCOPE_DATA_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/oscope-data";
 const char SONAR_A_SCAN_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/sonar-a-scan";
 const char SPI_TRANSACTION_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/spi-transaction";
+const char TCS_3400_DATA_16_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/tcs3400-data16";
+const char TCS_3400_DATA_8_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/tcs3400-data8";
 const char THERMISTOR_CONFIG_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/thermistor-config";
 const char THERMISTOR_DATA_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/thermistor-data";
 const char TIME_MESSAGE_TOPIC[] = "blueberry/devices/\x81/\x80/time";
@@ -3514,6 +3547,140 @@ uint32_t getSpiTransactionMessageTransactionDataSequenceLength(Bb * buf, BbBlock
 	return getBbSequenceLength(buf, msg, i);
 }
 /**
+ * Adds a Tcs 3400 Data 16 Message to the end of the current buffer
+ * A message to pass 16-bit data from the tcs3400 colour sensor into blueberry studio
+ * @param buf - the message buffer to add the message to
+ * @param param - An enum for defining the available 16-bit parameters of the tcs3400
+ * @param data
+ * @returns - the index of the new message.
+ */
+BbBlock addTcs3400Data16Message(Bb * buf, Parameter16Enum param, uint16_t data){
+	BbBlock msg = buf->length;
+	//Extend buffer to include the main message body before writing it
+	buf->length = msg + TCS_3400_DATA_16_MESSAGE_LENGTH;
+	setBbUint32(buf, msg, TCS_3400_DATA_16_MESSAGE_MODULE_MESSAGE_KEY_INDEX, TCS_3400_DATA_16_MESSAGE_MODULE_MESSAGE_KEY);
+	setBbUint16(buf, msg, TCS_3400_DATA_16_MESSAGE_LENGTH_INDEX, TCS_3400_DATA_16_MESSAGE_LENGTH/4);//length field is measured in 4-byte words
+	setBbUint8(buf, msg, TCS_3400_DATA_16_MESSAGE_MAX_ORDINAL_INDEX, TCS_3400_DATA_16_MESSAGE_MAX_ORDINAL);
+	setBbUint8(buf, msg, TCS_3400_DATA_16_MESSAGE_PARAM_INDEX, param);
+	setBbUint16(buf, msg, TCS_3400_DATA_16_MESSAGE_DATA_INDEX, data);
+	return msg;
+}
+/**
+ * Tests if the current message has no fields present.
+ * A message to pass 16-bit data from the tcs3400 colour sensor into blueberry studio
+ */
+bool isTcs3400Data16MessageEmpty(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) <= 2;//will always be length and ordinal fields
+}
+/**
+ * Tests if the current message has all defined fields present.
+ * A message to pass 16-bit data from the tcs3400 colour sensor into blueberry studio
+ */
+bool isTcs3400Data16MessageFull(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) >= TCS_3400_DATA_16_MESSAGE_MAX_ORDINAL;
+}
+/**
+ * A getter for the param field
+ * An enum for defining the available 16-bit parameters of the tcs3400
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+Parameter16Enum getTcs3400Data16MessageParam(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += TCS_3400_DATA_16_MESSAGE_PARAM_INDEX;
+	return getBbUint8(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the param field
+ * An enum for defining the available 16-bit parameters of the tcs3400
+ */
+bool isTcs3400Data16MessageParamPresent(Bb * buf, BbBlock msg ){
+	return TCS_3400_DATA_16_MESSAGE_PARAM_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the data field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint16_t getTcs3400Data16MessageData(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += TCS_3400_DATA_16_MESSAGE_DATA_INDEX;
+	return getBbUint16(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the data field
+ */
+bool isTcs3400Data16MessageDataPresent(Bb * buf, BbBlock msg ){
+	return TCS_3400_DATA_16_MESSAGE_DATA_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * Adds a Tcs 3400 Data 8 Message to the end of the current buffer
+ * A message to pass 8-bit data from the tcs3400 colour sensor into blueberry studio
+ * @param buf - the message buffer to add the message to
+ * @param param - An enum for defining the available 8-bit parameters of the tcs3400
+ * @param data
+ * @returns - the index of the new message.
+ */
+BbBlock addTcs3400Data8Message(Bb * buf, Parameter8Enum param, uint8_t data){
+	BbBlock msg = buf->length;
+	//Extend buffer to include the main message body before writing it
+	buf->length = msg + TCS_3400_DATA_8_MESSAGE_LENGTH;
+	setBbUint32(buf, msg, TCS_3400_DATA_8_MESSAGE_MODULE_MESSAGE_KEY_INDEX, TCS_3400_DATA_8_MESSAGE_MODULE_MESSAGE_KEY);
+	setBbUint16(buf, msg, TCS_3400_DATA_8_MESSAGE_LENGTH_INDEX, TCS_3400_DATA_8_MESSAGE_LENGTH/4);//length field is measured in 4-byte words
+	setBbUint8(buf, msg, TCS_3400_DATA_8_MESSAGE_MAX_ORDINAL_INDEX, TCS_3400_DATA_8_MESSAGE_MAX_ORDINAL);
+	setBbUint8(buf, msg, TCS_3400_DATA_8_MESSAGE_PARAM_INDEX, param);
+	setBbUint8(buf, msg, TCS_3400_DATA_8_MESSAGE_DATA_INDEX, data);
+	return msg;
+}
+/**
+ * Tests if the current message has no fields present.
+ * A message to pass 8-bit data from the tcs3400 colour sensor into blueberry studio
+ */
+bool isTcs3400Data8MessageEmpty(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) <= 2;//will always be length and ordinal fields
+}
+/**
+ * Tests if the current message has all defined fields present.
+ * A message to pass 8-bit data from the tcs3400 colour sensor into blueberry studio
+ */
+bool isTcs3400Data8MessageFull(Bb * buf, BbBlock msg){
+	return getBbMessageMaxOrdinal(buf, msg) >= TCS_3400_DATA_8_MESSAGE_MAX_ORDINAL;
+}
+/**
+ * A getter for the param field
+ * An enum for defining the available 8-bit parameters of the tcs3400
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+Parameter8Enum getTcs3400Data8MessageParam(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += TCS_3400_DATA_8_MESSAGE_PARAM_INDEX;
+	return getBbUint8(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the param field
+ * An enum for defining the available 8-bit parameters of the tcs3400
+ */
+bool isTcs3400Data8MessageParamPresent(Bb * buf, BbBlock msg ){
+	return TCS_3400_DATA_8_MESSAGE_PARAM_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the data field
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint8_t getTcs3400Data8MessageData(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += TCS_3400_DATA_8_MESSAGE_DATA_INDEX;
+	return getBbUint8(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the data field
+ */
+bool isTcs3400Data8MessageDataPresent(Bb * buf, BbBlock msg ){
+	return TCS_3400_DATA_8_MESSAGE_DATA_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
  * Adds a Thermistor Config Message to the end of the current buffer
  * A message to convey config parameters for Thermistors
  * @param buf - the message buffer to add the message to
@@ -4068,9 +4235,11 @@ bool isTimeSyncMessageLastReceivedTimePresent(Bb * buf, BbBlock msg ){
  * @param hardwareRev
  * @param hardwareType - an enum to convey PCB type
  * @param mcuType
+ * @param gitHash - the most significant 32 bits of the git hash of the current firmware repo
+ * @param gitDirty - true indicates that files have been changed since the last commit, false means everything is clean
  * @returns - the index of the new message.
  */
-BbBlock addVersionMessage(Bb * buf, uint32_t firmwareVersion, uint8_t hardwareRev, HwTypeEnum hardwareType, McuTypeEnum mcuType){
+BbBlock addVersionMessage(Bb * buf, uint32_t firmwareVersion, uint8_t hardwareRev, HwTypeEnum hardwareType, McuTypeEnum mcuType, uint32_t gitHash, bool gitDirty){
 	BbBlock msg = buf->length;
 	//Extend buffer to include the main message body before writing it
 	buf->length = msg + VERSION_MESSAGE_LENGTH;
@@ -4081,6 +4250,8 @@ BbBlock addVersionMessage(Bb * buf, uint32_t firmwareVersion, uint8_t hardwareRe
 	setBbUint8(buf, msg, VERSION_MESSAGE_HARDWARE_REV_INDEX, hardwareRev);
 	setBbUint16(buf, msg, VERSION_MESSAGE_HARDWARE_TYPE_INDEX, hardwareType);
 	setBbUint8(buf, msg, VERSION_MESSAGE_MCU_TYPE_INDEX, mcuType);
+	setBbUint32(buf, msg, VERSION_MESSAGE_GIT_HASH_INDEX, gitHash);
+	setBbBool(buf, msg, VERSION_MESSAGE_GIT_DIRTY_INDEX, VERSION_MESSAGE_GIT_DIRTY_MASK, gitDirty);
 	return msg;
 }
 /**
@@ -4162,6 +4333,42 @@ McuTypeEnum getVersionMessageMcuType(Bb * buf, BbBlock msg ){
  */
 bool isVersionMessageMcuTypePresent(Bb * buf, BbBlock msg ){
 	return VERSION_MESSAGE_MCU_TYPE_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the gitHash field
+ * the most significant 32 bits of the git hash of the current firmware repo
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+uint32_t getVersionMessageGitHash(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += VERSION_MESSAGE_GIT_HASH_INDEX;
+	return getBbUint32(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the gitHash field
+ * the most significant 32 bits of the git hash of the current firmware repo
+ */
+bool isVersionMessageGitHashPresent(Bb * buf, BbBlock msg ){
+	return VERSION_MESSAGE_GIT_HASH_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the gitDirty field
+ * true indicates that files have been changed since the last commit, false means everything is clean
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+bool isVersionMessageGitDirty(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += VERSION_MESSAGE_GIT_DIRTY_INDEX;
+	return getBbBool(buf, msg, i, VERSION_MESSAGE_GIT_DIRTY_MASK);
+}
+/**
+ * Tests if the current message containts the gitDirty field
+ * true indicates that files have been changed since the last commit, false means everything is clean
+ */
+bool isVersionMessageGitDirtyPresent(Bb * buf, BbBlock msg ){
+	return VERSION_MESSAGE_GIT_DIRTY_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
 }
 /**
  * Adds a Whos There Message to the end of the current buffer
