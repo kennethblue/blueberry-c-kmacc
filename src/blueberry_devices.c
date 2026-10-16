@@ -164,6 +164,7 @@
 #define SONAR_A_SCAN_MESSAGE_MAX_ORDINAL_INDEX (6)
 #define SONAR_A_SCAN_MESSAGE_MODULE_MESSAGE_KEY_INDEX (0)
 #define SONAR_A_SCAN_MESSAGE_SAMPLE_RATE_INDEX (20)
+#define SONAR_A_SCAN_MESSAGE_START_INDEX (32)
 #define SONAR_A_SCAN_MESSAGE_TOTAL_SAMPLE_NUM_INDEX (16)
 #define SONAR_A_SCAN_MESSAGE_TYPE_INDEX (28)
 #define SPI_TRANSACTION_MESSAGE_BAUD_DIV_INDEX (10)
@@ -350,6 +351,7 @@
 #define SONAR_A_SCAN_MESSAGE_MAX_ORDINAL_ORDINAL (2)
 #define SONAR_A_SCAN_MESSAGE_MODULE_MESSAGE_KEY_ORDINAL (0)
 #define SONAR_A_SCAN_MESSAGE_SAMPLE_RATE_ORDINAL (6)
+#define SONAR_A_SCAN_MESSAGE_START_ORDINAL (9)
 #define SONAR_A_SCAN_MESSAGE_TOTAL_SAMPLE_NUM_ORDINAL (5)
 #define SONAR_A_SCAN_MESSAGE_TYPE_ORDINAL (8)
 #define SPI_TRANSACTION_MESSAGE_BAUD_DIV_ORDINAL (5)
@@ -440,7 +442,7 @@
 #define OSCOPE_CONFIG_MESSAGE_MODULE_MESSAGE_KEY (0x42447e1d)
 #define OSCOPE_DATA_MESSAGE_MAX_ORDINAL (8)
 #define OSCOPE_DATA_MESSAGE_MODULE_MESSAGE_KEY (0x4244831d)
-#define SONAR_A_SCAN_MESSAGE_MAX_ORDINAL (8)
+#define SONAR_A_SCAN_MESSAGE_MAX_ORDINAL (9)
 #define SONAR_A_SCAN_MESSAGE_MODULE_MESSAGE_KEY (0x4244c136)
 #define SPI_TRANSACTION_MESSAGE_MAX_ORDINAL (10)
 #define SPI_TRANSACTION_MESSAGE_MODULE_MESSAGE_KEY (0x424425ed)
@@ -500,7 +502,7 @@
 #define IMU_DATA_MESSAGE_LENGTH (12)
 #define OSCOPE_CONFIG_MESSAGE_LENGTH (24)
 #define OSCOPE_DATA_MESSAGE_LENGTH (28)
-#define SONAR_A_SCAN_MESSAGE_LENGTH (32)
+#define SONAR_A_SCAN_MESSAGE_LENGTH (36)
 #define SPI_TRANSACTION_MESSAGE_LENGTH (24)
 #define TCS_3400_DATA_16_MESSAGE_LENGTH (12)
 #define TCS_3400_DATA_8_MESSAGE_LENGTH (12)
@@ -3120,9 +3122,10 @@ uint32_t getOscopeDataMessageDataSequenceLength(Bb * buf, BbBlock msg){
  * @param totalSampleNum - the number of datapoints in this data set. This is defined by the device
  * @param sampleRate - the sample rate reported from the data source
  * @param type - An enum for conveying the type of data in an A-scan
+ * @param start - the x-offset of the first value. This could be in units of time or frequency, depending on type.
  * @returns - the index of the new message.
  */
-BbBlock addSonarAScanMessage(Bb * buf, uint32_t captureId, uint32_t firstSampleIndex, uint32_t totalSampleNum, float sampleRate, AScanTypeEnum type){
+BbBlock addSonarAScanMessage(Bb * buf, uint32_t captureId, uint32_t firstSampleIndex, uint32_t totalSampleNum, float sampleRate, AScanTypeEnum type, float start){
 	BbBlock msg = buf->length;
 	//Extend buffer to include the main message body before writing it
 	buf->length = msg + SONAR_A_SCAN_MESSAGE_LENGTH;
@@ -3134,6 +3137,7 @@ BbBlock addSonarAScanMessage(Bb * buf, uint32_t captureId, uint32_t firstSampleI
 	setBbUint32(buf, msg, SONAR_A_SCAN_MESSAGE_TOTAL_SAMPLE_NUM_INDEX, totalSampleNum);
 	setBbFloat32(buf, msg, SONAR_A_SCAN_MESSAGE_SAMPLE_RATE_INDEX, sampleRate);
 	setBbUint8(buf, msg, SONAR_A_SCAN_MESSAGE_TYPE_INDEX, type);
+	setBbFloat32(buf, msg, SONAR_A_SCAN_MESSAGE_START_INDEX, start);
 	setBbUint16(buf, msg, SONAR_A_SCAN_MESSAGE_DATA_PLACEHOLDER_INDEX, BB_INVALID_BLOCK);//clear sequence header
 	return msg;
 }
@@ -3284,6 +3288,24 @@ AScanTypeEnum getSonarAScanMessageType(Bb * buf, BbBlock msg ){
  */
 bool isSonarAScanMessageTypePresent(Bb * buf, BbBlock msg ){
 	return SONAR_A_SCAN_MESSAGE_TYPE_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
+}
+/**
+ * A getter for the start field
+ * the x-offset of the first value. This could be in units of time or frequency, depending on type.
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+float getSonarAScanMessageStart(Bb * buf, BbBlock msg ){
+	uint16_t i = 0;
+	i += SONAR_A_SCAN_MESSAGE_START_INDEX;
+	return getBbFloat32(buf, msg, i);
+}
+/**
+ * Tests if the current message containts the start field
+ * the x-offset of the first value. This could be in units of time or frequency, depending on type.
+ */
+bool isSonarAScanMessageStartPresent(Bb * buf, BbBlock msg ){
+	return SONAR_A_SCAN_MESSAGE_START_ORDINAL <= (getBbMessageMaxOrdinal(buf, msg));
 }
 /**
  * A function to initialize a Float Sequence

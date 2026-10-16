@@ -318,7 +318,9 @@ typedef enum {
 	A_SCAN_TYPE_IQ_DEMOD = 0x0002, 
 	A_SCAN_TYPE_RECTIFIER_DEMOD = 0x0003, 
 	A_SCAN_TYPE_MIN_MAX = 0x0004, 
-	A_SCAN_TYPE_RAW_CURRENT = 0x0005, 
+	A_SCAN_TYPE_CURRENT = 0x0005, 
+	A_SCAN_TYPE_CURRENT_SWEEP = 0x0006, 
+	A_SCAN_TYPE_RAW_CURRENT = 0x0007, 
 } AScanTypeEnum;
 
 typedef enum {
@@ -554,9 +556,10 @@ BbBlock addOscopeDataMessage(Bb * buf, uint8_t channel, uint32_t captureId, floa
  * @param totalSampleNum - the number of datapoints in this data set. This is defined by the device
  * @param sampleRate - the sample rate reported from the data source
  * @param type - An enum for conveying the type of data in an A-scan
+ * @param start - the x-offset of the first value. This could be in units of time or frequency, depending on type.
  * @returns - the index of the new message.
  */
-BbBlock addSonarAScanMessage(Bb * buf, uint32_t captureId, uint32_t firstSampleIndex, uint32_t totalSampleNum, float sampleRate, AScanTypeEnum type);
+BbBlock addSonarAScanMessage(Bb * buf, uint32_t captureId, uint32_t firstSampleIndex, uint32_t totalSampleNum, float sampleRate, AScanTypeEnum type, float start);
 /**
  * Adds a Spi Transaction Message to the end of the current buffer
  *  A message to define an SPI transaction to be sent out
@@ -3391,6 +3394,18 @@ AScanTypeEnum getSonarAScanMessageType(Bb * buf, BbBlock msg );
  * An enum for conveying the type of data in an A-scan
  */
 bool isSonarAScanMessageTypePresent(Bb * buf, BbBlock msg );
+/**
+ * A getter for the start field
+ * the x-offset of the first value. This could be in units of time or frequency, depending on type.
+ * @param buf - the message buffer to add the message to
+ * @param msg - the index of the start of the message
+ */
+float getSonarAScanMessageStart(Bb * buf, BbBlock msg );
+/**
+ * Tests if the current message containts the start field
+ * the x-offset of the first value. This could be in units of time or frequency, depending on type.
+ */
+bool isSonarAScanMessageStartPresent(Bb * buf, BbBlock msg );
 /**
  * A function to initialize a Float Sequence
  * a handy sequence of 32-bit floats. This is like an array but variable length
