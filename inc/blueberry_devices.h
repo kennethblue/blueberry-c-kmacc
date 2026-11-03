@@ -323,6 +323,7 @@ typedef enum {
 	A_SCAN_TYPE_RAW_CURRENT = 0x0007, 
 	A_SCAN_TYPE_CODED = 0x0008, 
 	A_SCAN_TYPE_CODED_IQ = 0x0009, 
+	A_SCAN_TYPE_CODED_RAW = 0x000a, 
 } AScanTypeEnum;
 
 typedef enum {
