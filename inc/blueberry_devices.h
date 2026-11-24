@@ -327,6 +327,7 @@ typedef enum {
 	A_SCAN_TYPE_TX = 0x000b, 
 	A_SCAN_TYPE_TX_SWEEP = 0x000c, 
 	A_SCAN_TYPE_TX_RAW = 0x000d, 
+	A_SCAN_TYPE_CHIRP1 = 0x000e, 
 } AScanTypeEnum;
 
 typedef enum {
